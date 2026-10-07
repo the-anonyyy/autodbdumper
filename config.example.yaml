@@ -1,0 +1,90 @@
+# copy to config.yaml and fill in your secrets
+paths:
+  data: ./data
+  dumps: ./data/dumps
+  raw: ./data/raw
+  final: ./data/final
+  logs: ./logs
+logging:
+  level: INFO
+  file: ./logs/autocc.log
+telegram:
+  enabled: true
+  token: YOUR_BOT_TOKEN_HERE
+  allowed_chat_ids:
+  - YOUR_CHAT_ID_HERE
+  notify_stages: true
+recon:
+  subfinder: true
+  httpx: true
+  katana: true
+  katana_depth: 3
+  threads: 10
+  timeout: 10
+sqli:
+  sqlmap_bin: /home/hatch/workspace/bin/sqlmap
+  level: 2
+  risk: 1
+  threads: 10
+  technique: BEUSTQ
+  random_agent: true
+  tamper: space2comment,between,randomcase
+  delay: 0
+  batch: true
+livecheck:
+  enabled: true
+  timeout: 8
+  workers: 50
+dump:
+  target_db: target_db
+  workers: 4
+  zip_export: true
+  card_tables_regex: (card|cc|credit|payment|billing|checkout|order|transaction|user)
+  dump_columns:
+  - card_number
+  - cvv
+  - exp_month
+  - exp_year
+  - cardholder_name
+  - address
+extract:
+  extensions:
+  - .csv
+  - .txt
+  - .sql
+  - .log
+validate:
+  min_length: 13
+  max_length: 19
+  luhn: true
+  bin_check: true
+dedupe:
+  bin_report: true
+output:
+  formats:
+  - txt
+  - csv
+  - json
+  base_name: output
+  zip_export: true
+sqlmapapi:
+  enabled: true
+  host: 127.0.0.1
+  port: 8775
+  username: YOUR_API_USER
+  password: YOUR_API_PASSWORD
+proxies:
+  enabled: false
+  file: ./data/proxies.txt
+  test_url: http://example.com
+  test_timeout: 10
+  rotate_every: 10
+secrets:
+  enabled: true
+parser:
+  engines:
+  - ddgs
+  - bing
+  - brave
+  - mojeek
+  max_per_domain: 20

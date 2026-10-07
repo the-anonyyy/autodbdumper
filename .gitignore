@@ -1,0 +1,25 @@
+# secrets — kabhi commit mat karo
+config.yaml
+
+# runtime / data
+.venv/
+__pycache__/
+*.pyc
+data/
+logs/
+*.log
+
+# checkpoints / kill signals
+**/.sqli_checkpoint.json
+**/.kill
+**/.sqli_batch.txt
+
+# dumps & outputs (bade + sensitive ho sakte hain)
+*.zip
+!docs/autocc-source.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
