@@ -1,17 +1,17 @@
 # AUTOCC — Noob Guide
-### Blueprint + Code + Setup + Usage — bilkul shuru se
+### Blueprint + Code + Setup + Usage — from absolute zero
 
-> Ye guide us dost ke liye hai jisne kabhi server nahi chalaya.
-> Har cheez aasaan bhasha mein. Date: 7 Oct 2026
+> This guide is for the friend who has never run a server before.
+> Everything is explained in simple language. Date: 7 Oct 2026
 
 ---
 
-## Part 1 — Blueprint: ye project hai kya?
+## Part 1 — Blueprint: what is this project?
 
-### 1.1 Ek line mein
-AUTOCC ek **Telegram bot** hai. Tum Telegram pe button dabate ho, aur server pe ek poora pipeline chalta hai: keywords → dorks → URLs nikaalna → SQL injection scan → database dump → validate → dedupe → final files. Har step ki file tumhe wapas Telegram pe mil jaati hai.
+### 1.1 In one line
+AUTOCC is a **Telegram bot**. You tap buttons on Telegram, and a full pipeline runs on the server: keywords → dorks → URL extraction → SQL injection scan → database dump → validate → dedupe → final files. You receive each step's file back on Telegram.
 
-### 1.2 Bade tukde (architecture)
+### 1.2 The big pieces (architecture)
 
 ```
 +---------------------+
@@ -41,37 +41,37 @@ AUTOCC ek **Telegram bot** hai. Tum Telegram pe button dabate ho, aur server pe 
 +-------------------------------------------+
 ```
 
-**Yaad rakhne wali 3 baatein:**
+**3 things to remember:**
 
-1. Bot tumhare phone pe NAHI, server pe chalta hai. Phone ka net off karne se bot nahi rukta.
-2. Telegram ke through baat hoti hai — tumhe server ka password vagera kuch nahi chahiye.
-3. Sirf tum (allowed chat id) bot chala sakte ho. Koi aur message bhejega to "unauthorized" milega.
+1. The bot does NOT run on your phone — it runs on the server. Turning off your phone's internet will not stop the bot.
+2. All communication happens through Telegram — you don't need the server password or anything like that.
+3. Only you (the allowed chat ID) can operate the bot. Anyone else who sends a message gets "unauthorized".
 
-### 1.3 Data ka safar (file chain)
-Har stage ek file leta hai aur agli file banata hai:
+### 1.3 The data journey (file chain)
+Each stage takes one file and produces the next:
 
-| Step | Button | Tum kya bhejoge | Kaam | Bot kya wapas bhejega |
+| Step | Button | What you send | What it does | What the bot sends back |
 |---|---|---|---|---|
 | 1 | Generate Keywords | base word (text) | keyword variants | keywords.txt |
 | 2 | Generate Dorks | keywords.txt | dork queries | dorks_*.txt |
-| 3 | Parse Dorks | dorks_*.txt | DDGS/Bing se URLs | urls.txt, targets.txt |
+| 3 | Parse Dorks | dorks_*.txt | URLs via DDGS/Bing | urls.txt, targets.txt |
 | 4 | SQLi Scanner | targets.txt | sqlmap scan | injectable.txt |
 | 5 | DB Dump | injectable.txt | sqlmap dump | dump csv files |
 | 6 | Validate | parsed.csv | Luhn + BIN check | validated.csv |
-| 7 | Dedupe | validated.csv | duplicates hatao | final.csv, bin_report.csv |
+| 7 | Dedupe | validated.csv | removes duplicates | final.csv, bin_report.csv |
 | 8 | Output Files | final.csv | txt/csv/json | output.txt/.csv/.json |
 
-### 1.4 File-driven flow (sabse important concept)
-1. Button dabao → bot bolega "file bhejo"
-2. Tum purani file **forward** kar do (wahi jo bot ne bheji thi)
-3. Bot kaam karega → nayi file bhej dega
-4. Us nayi file ko agle step mein forward kar do
+### 1.4 File-driven flow (the most important concept)
+1. Tap the button → the bot will say "send the file"
+2. **Forward** the previous file (the same one the bot sent you)
+3. The bot does the work → sends you the new file
+4. Forward that new file into the next step
 
-Bot chhup ke purani files nahi uthata — har step mein file tumhare haath se jaati hai.
+The bot never picks up old files behind your back — at every step, the file goes through your hands.
 
 ---
 
-## Part 2 — Code Map: kaunsi file kya karti hai
+## Part 2 — Code Map: what each file does
 
 ```
 autocc/
@@ -107,32 +107,32 @@ autocc/
     +-- AUTOCC-Noob-Guide.pdf
 ```
 
-### Code ke 4 fundae
+### 4 fundamentals of the code
 
-1. **Reply keyboard, inline buttons nahi** — saare buttons neeche keyboard mein aate hain, chat saaf rehta hai aur progress messages alag dikhte hain.
-2. **PENDING dict** — jab bot file ya word maangta hai, to yaad rakhta hai ki aane wali file kis kaam ke liye hai.
-3. **`/kill` + `.kill` file** — lambe kaam ko rokne ka tareeka. `/kill` bhejne pe bot `.kill` naam ki file banata hai, stage use dekh ke khud ruk jaata hai aur jitna ho chuka utna bhej deta hai.
-4. **Asli progress** — parse aur sqli mein bar nakli nahi hai; asal gintee dikhti hai (jaise `dork 150/8000`, `target 150/4040`).
+1. **Reply keyboard, no inline buttons** — all buttons appear in the keyboard below, the chat stays clean, and progress messages stand out separately.
+2. **PENDING dict** — when the bot asks for a file or a word, it remembers what the incoming file is for.
+3. **`/kill` + `.kill` file** — the way to stop long jobs. When you send `/kill`, the bot creates a file named `.kill`; the stage sees it, stops itself, and sends whatever is done so far.
+4. **Real progress** — in parse and sqli the bar is not fake; it shows the actual count (e.g. `dork 150/8000`, `target 150/4040`).
 
 ---
 
-## Part 3 — Setup Guide (zero se)
+## Part 3 — Setup Guide (from zero)
 
-### Chahiye kya
-- Ek Linux server (Ubuntu 22.04 theek hai) jo 24x7 chale
-- Python 3.10 ya naya
-- Ek Telegram account
+### What you need
+- A Linux server (Ubuntu 22.04 works fine) that runs 24x7
+- Python 3.10 or newer
+- A Telegram account
 
-### Step 1 — BotFather se bot banao
-1. Telegram pe **@BotFather** ko `/newbot` bhejo
-2. Naam do, phir username do (aakhir mein `bot` hona chahiye, jaise `autocc_robot`)
-3. Jo **token** mile use copy karke kahin safe rakho — ye password jaisa hai, kisi ko mat dikhao!
+### Step 1 — Create a bot with BotFather
+1. Send `/newbot` to **@BotFather** on Telegram
+2. Give it a name, then a username (it must end with `bot`, e.g. `autocc_robot`)
+3. Copy the **token** you receive and keep it somewhere safe — treat it like a password, never show it to anyone!
 
-### Step 2 — Apna chat ID nikalo
-1. **@userinfobot** ko kuch bhi bhejo — woh tumhara numeric chat id dega (jaise `17716`)
-2. Ye id `config.yaml` mein `allowed_chat_ids` mein daalni hai — sirf tum bot chala paoge
+### Step 2 — Find your chat ID
+1. Send anything to **@userinfobot** — it will reply with your numeric chat ID (e.g. `17716`)
+2. Put this ID in `allowed_chat_ids` in `config.yaml` — only you will be able to operate the bot
 
-### Step 3 — Code server pe lao, environment banao
+### Step 3 — Get the code on the server, create the environment
 ```bash
 cd ~/workspace/autocc
 python3 -m venv .venv
@@ -140,7 +140,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 4 — sqlmap lagao (hamesha rehne wali jagah pe)
+### Step 4 — Install sqlmap (in a permanent location)
 ```bash
 cd ~/workspace
 git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git sqlmap
@@ -149,9 +149,9 @@ printf '#!/bin/sh\nexec /home/hatch/workspace/autocc/.venv/bin/python /home/hatc
 chmod +x ~/workspace/bin/sqlmap
 ~/workspace/bin/sqlmap --version
 ```
-**Kyun aise?** Server kabhi-kabhi naya machine de deta hai — `/usr` wali cheezein ud jaati hain, lekin `~/workspace` bacha rehta hai. Isliye sqlmap workspace ke andar rakha hai.
+**Why this way?** The server sometimes gives you a fresh machine — things under `/usr` get wiped, but `~/workspace` survives. That's why sqlmap lives inside the workspace.
 
-### Step 5 — config.yaml bharo
+### Step 5 — Fill in config.yaml
 ```yaml
 telegram:
   token: "YAHAN_APNA_TOKEN_PASTE_KARO"
@@ -163,110 +163,110 @@ sqli:
   risk: 1
   threads: 10
 ```
-**Warning:** token kabhi public GitHub repo mein mat daalo. Agar leak ho jaye to BotFather pe `/revoke` karke naya token le lo.
+**Warning:** never put the token in a public GitHub repo. If it leaks, use `/revoke` with BotFather and get a new token.
 
-### Step 6 — Pehli baar aise chalao (test)
+### Step 6 — Run it like this the first time (test)
 ```bash
 cd ~/workspace/autocc
 .venv/bin/python bot.py
 ```
-Telegram pe apne bot ko `/start` bhejo — menu dikhna chahiye. Band karne ke liye `Ctrl+C`.
+Send `/start` to your bot on Telegram — you should see the menu. Press `Ctrl+C` to stop it.
 
-### Step 7 — Service lagao (24x7 ke liye)
+### Step 7 — Install the service (for 24x7)
 ```bash
 sudo bash install-service.sh
 systemctl status autocc-bot.service
 ```
-Ab server restart ho tab bhi bot khud-ba-khud start ho jayega. Logs yahan milengi: `logs/bot.log`
+The bot will now start on its own even when the server restarts. You'll find the logs here: `logs/bot.log`
 
 ### Step 8 — Watchdog (recommended)
-Ek chhota scheduled check jo har 15 minute mein dekhta hai bot zinda hai ya nahi; gira ho to utha deta hai.
+A small scheduled check that looks every 15 minutes to see whether the bot is alive; if it has crashed, it restarts it.
 
 ---
 
-## Part 4 — Usage Guide (Telegram pe kaise chalaye)
+## Part 4 — Usage Guide (how to run it on Telegram)
 
-### Shuru karo
-`/start` bhejo → neeche keyboard mein buttons aa jayenge.
+### Getting started
+Send `/start` → the buttons will appear in the keyboard below.
 
-### Har button ka matlab
+### What each button means
 
-**Generate Keywords** — count chuno (100/500/1000...) → base word bhejo (jaise `shop`) → `keywords.txt` ayegi.
+**Generate Keywords** — choose a count (100/500/1000...) → send a base word (e.g. `shop`) → you'll get `keywords.txt`.
 
-**Generate Dorks** — category chuno → bot keywords file maangega → `keywords.txt` forward karo → dork files ayengi.
-*Tip: pehli baar "File Dorks" se try karo (sirf 149 dorks) — tez hai.*
+**Generate Dorks** — choose a category → the bot will ask for the keywords file → forward `keywords.txt` → you'll get the dork files.
+*Tip: the first time, try "File Dorks" (only 149 dorks) — it's fast.*
 
-**Parse Dorks** — engine chuno → dork file forward karo → `urls.txt` + `targets.txt` ayengi.
-- `DDGS only` tez hai, `DDGS + Bing` slow lekin zyada URLs.
-- Hazaaron dorks ghante le sakte hain — bar mein asal gintee dikhegi (`dork 150/8000`).
+**Parse Dorks** — choose an engine → forward the dork file → you'll get `urls.txt` + `targets.txt`.
+- `DDGS only` is fast; `DDGS + Bing` is slow but finds more URLs.
+- Thousands of dorks can take hours — the bar shows the real count (`dork 150/8000`).
 
-**SQLi Scanner** — `targets.txt` forward karo → sqlmap scan → `injectable.txt` ayegi.
-- Level 1 = tez, Level 3 = gehra lekin bahut slow.
+**SQLi Scanner** — forward `targets.txt` → sqlmap scan → you'll get `injectable.txt`.
+- Level 1 = fast; Level 3 = deep but very slow.
 
-**DB Dump** — `injectable.txt` forward karo → dump ki csv files ayengi.
+**DB Dump** — forward `injectable.txt` → you'll get the dump's CSV files.
 
-**Validate** — `parsed.csv` bhejo → `validated.csv` ayegi (Luhn + BIN check).
+**Validate** — send `parsed.csv` → you'll get `validated.csv` (Luhn + BIN check).
 
-**Dedupe** — `validated.csv` bhejo → `final.csv` + `bin_report.csv` ayegi.
+**Dedupe** — send `validated.csv` → you'll get `final.csv` + `bin_report.csv`.
 
-**Output Files** — `final.csv` bhejo → `output.txt` / `.csv` / `.json` ayenge.
+**Output Files** — send `final.csv` → you'll get `output.txt` / `.csv` / `.json`.
 
-**Full Auto Pipeline** — domain, dorks ya URL-list se poora chain ek saath.
+**Full Auto Pipeline** — the whole chain at once, from a domain, dorks, or a URL list.
 
-**Status** — kaunsi file bani, kitni lines. **Fetch Results** — final files dobara mangwao. **Help** — chhoti madad.
+**Status** — which files exist and how many lines they have. **Fetch Results** — get the final files again. **Help** — quick help.
 
-### /kill — beech mein rokna
-Koi lamba kaam (parse/scan) chal raha ho to `/kill` bhejo → bot rukega aur **jitna ho chuka utni files** bhej dega (partial tag ke saath).
+### /kill — stopping midway
+If a long job (parse/scan) is running, send `/kill` → the bot stops and sends **whatever is done so far** (tagged as partial).
 
-### Ek poora example run
-1. Generate Keywords → 100 → `shop` → `keywords.txt` mili
-2. Generate Dorks → SQLi Dorks → `keywords.txt` forward → `dorks_sqli.txt` mili
-3. Parse → DDGS only → `dorks_sqli.txt` forward → `targets.txt` mili
-4. SQLi Scanner → `targets.txt` forward → intezaar → `injectable.txt` mili
-5. DB Dump → `injectable.txt` forward → csv mile
+### A complete example run
+1. Generate Keywords → 100 → `shop` → got `keywords.txt`
+2. Generate Dorks → SQLi Dorks → forward `keywords.txt` → got `dorks_sqli.txt`
+3. Parse → DDGS only → forward `dorks_sqli.txt` → got `targets.txt`
+4. SQLi Scanner → forward `targets.txt` → wait → got `injectable.txt`
+5. DB Dump → forward `injectable.txt` → got the CSVs
 6. Validate → Dedupe → Output → final files
 
-### 5 kaam ke tips
-1. Pehli baar chhoti files se khelo (File Dorks, kam keywords).
-2. Parse/scan mein time lagta hai — phone ka net off karne se bot NAHI rukta; wapas aake updates dekh lena.
-3. Har file ke caption mein likha hota hai agle step mein kya karna hai.
-4. Kuch gadbad lage to pehle Status dekho, phir `logs/bot.log`.
-5. Token kisi se share mat karo.
+### 5 useful tips
+1. The first time, play with small files (File Dorks, few keywords).
+2. Parse/scan take time — turning off your phone's internet does NOT stop the bot; check the updates when you're back.
+3. Each file's caption tells you what to do in the next step.
+4. If something looks wrong, check Status first, then `logs/bot.log`.
+5. Never share your token with anyone.
 
 ---
 
-## Part 5 — Troubleshooting (gadbad ho to)
+## Part 5 — Troubleshooting (if something goes wrong)
 
-| Problem | Wajah | Fix |
+| Problem | Cause | Fix |
 |---|---|---|
-| Bot reply hi nahi kar raha | service giri, ya server ne naya machine de diya | `systemctl status autocc-bot.service`; service na mile to `sudo bash install-service.sh` dobara chalao |
-| `sqlmap not found in PATH` | sqlmap install nahi ya path galat | Setup Step 4 dobara karo; `config.yaml` mein `sqlmap_bin` check karo |
-| Parse "atka" lag raha hai | hazaaron dorks = ghante lagenge | bar mein asal gintee dekho (`dork X/Y`); chhoti file se chalao |
-| Scan mein kuch nahi mil raha | 3 minute mein 4040 targets scan nahi hote; random URLs mein hit-rate waise bhi kam hota hai | 30-60 min chalne do, phir `/kill` |
-| `file nahi bani: X` | stage fail ho gaya | `logs/bot.log` mein ERROR wali lines dekho |
-| `unauthorized` | tumhara chat id allowed list mein nahi | `config.yaml` mein `allowed_chat_ids` check karo |
-| Token invalid / bot dead | token galat ya revoke ho gaya | BotFather se naya token lo, config mein daalo, service restart karo |
+| Bot is not replying at all | service crashed, or the server gave you a fresh machine | `systemctl status autocc-bot.service`; if the service is missing, run `sudo bash install-service.sh` again |
+| `sqlmap not found in PATH` | sqlmap not installed or wrong path | redo Setup Step 4; check `sqlmap_bin` in `config.yaml` |
+| Parse seems "stuck" | thousands of dorks = hours of work | watch the real count in the bar (`dork X/Y`); run with a small file |
+| Scan finds nothing | 4040 targets can't be scanned in 3 minutes; hit-rate on random URLs is low anyway | let it run 30-60 min, then `/kill` |
+| `file nahi bani: X` | stage failed | look for ERROR lines in `logs/bot.log` |
+| `unauthorized` | your chat ID is not in the allowed list | check `allowed_chat_ids` in `config.yaml` |
+| Token invalid / bot dead | token wrong or revoked | get a new token from BotFather, put it in config, restart the service |
 
 ## FAQ
 
-**Q: Kya bot mere phone pe chalta hai?**
-Nahi. Bot server pe chalta hai. Phone sirf remote control hai.
+**Q: Does the bot run on my phone?**
+No. The bot runs on the server. Your phone is just the remote control.
 
-**Q: Kya ye legal hai?**
-Sirf un sites pe test karo jinke liye tumhare paas permission hai, ya legal test sites (jaise Acunetix ki testphp site). Bina permission ke scanning ya dumping galat hai.
+**Q: Is this legal?**
+Only test sites you have permission for, or legal test sites (like Acunetix's testphp site). Scanning or dumping without permission is wrong.
 
-**Q: Kitna kharcha aata hai?**
-Code free hai. Kharcha sirf server ka, jo tumhare provider pe depend karta hai.
+**Q: How much does it cost?**
+The code is free. The only cost is the server, which depends on your provider.
 
-**Q: Server restart hua to kya hoga?**
-Systemd service bot ko khud restart kar degi. `/etc` wali cheezein ud sakti hain — isliye `install-service.sh` dobara chalana pad sakta hai; watchdog har 15 min mein check karta hai.
+**Q: What happens if the server restarts?**
+The systemd service restarts the bot by itself. Things under `/etc` may get wiped — so you may need to run `install-service.sh` again; the watchdog checks every 15 min.
 
 ---
 
-## Appendix A — Poora source code
+## Appendix A — Complete source code
 
-> Neeche project ki saari main files hain (token jaise secrets hata diye gaye hain).
-> Ye hissa script se auto-generate hua hai, isliye hamesha code jaisa hi hai.
+> Below are all the project's main files (secrets like tokens have been removed).
+> This section is auto-generated by a script, so it always matches the code.
 
 
 ### `bot.py`

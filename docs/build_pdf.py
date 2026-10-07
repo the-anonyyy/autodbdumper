@@ -422,14 +422,14 @@ pdf.set_text_color(*ACCENT)
 pdf.cell(0, 12, "Contents", new_x="LMARGIN", new_y="NEXT")
 rule()
 toc = [
-    ("Introduction", "Guide kaise use karein"),
-    ("Part 1 — Blueprint", "Ye project hai kya? Poora system ek nazar mein"),
-    ("Part 2 — Code Map", "Kaunsi file kya karti hai"),
-    ("Part 3 — Setup Guide", "Server ready karo, zero se"),
-    ("Part 4 — Usage Guide", "Telegram pe bot kaise chalaye"),
-    ("Part 5 — Troubleshooting", "Gadbad ho to kya karein"),
-    ("FAQ", "Aksar puche jaane wale sawaal"),
-    ("Appendix A — Source Code", "Poora code, copy-safe format mein"),
+    ("Introduction", "How to use this guide"),
+    ("Part 1 — Blueprint", "What is this project? The full system at a glance"),
+    ("Part 2 — Code Map", "What each file does"),
+    ("Part 3 — Setup Guide", "Get the server ready, from zero"),
+    ("Part 4 — Usage Guide", "How to operate the bot on Telegram"),
+    ("Part 5 — Troubleshooting", "What to do when something breaks"),
+    ("FAQ", "Frequently asked questions"),
+    ("Appendix A — Source Code", "Complete code in copy-safe format"),
 ]
 pdf.set_font("body", "", 11)
 pdf.set_text_color(*DARK)
@@ -447,8 +447,8 @@ for i, (t, d) in enumerate(toc, 1):
     pdf.ln(2)
 
 # INTRODUCTION (preamble)
-section_banner("SHURU KARNE SE PEHLE", "Introduction",
-               "Ye guide kaise use karein — 2 minute mein samjho")
+section_banner("BEFORE YOU BEGIN", "Introduction",
+               "How to use this guide — understand in 2 minutes")
 render_section_body(preamble)
 
 # PARTS / FAQ / APPENDIX
