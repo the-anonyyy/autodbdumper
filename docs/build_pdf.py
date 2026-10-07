@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build AUTOCC-Noob-Guide.pdf — professional v2 layout.
+"""Build AutoDump-Noob-Guide.pdf — professional v2 layout.
 
 Structure: cover -> contents -> intro -> Part 1..5 (each on fresh page w/ banner)
 -> FAQ -> Appendix divider -> one page per source file.
@@ -15,7 +15,7 @@ from fpdf import FPDF
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(BASE, "NOOB_GUIDE.md")
-OUT = os.path.join(BASE, "AUTOCC-Noob-Guide.pdf")
+OUT = os.path.join(BASE, "AutoDump-Noob-Guide.pdf")
 
 ACCENT = (30, 58, 138)        # deep blue
 ACCENT_SOFT = (235, 240, 255)
@@ -31,7 +31,7 @@ class GuidePDF(FPDF):
         self.set_y(-14)
         self.set_font("body", "I", 8)
         self.set_text_color(*GRAY)
-        self.cell(0, 8, f"AUTOCC — Noob Guide    |    Page {self.page_no()}/{{nb}}",
+        self.cell(0, 8, f"Auto Dump — Noob Guide    |    Page {self.page_no()}/{{nb}}",
                   align="C")
 
 
@@ -39,8 +39,8 @@ pdf = GuidePDF(format="A4")
 pdf.alias_nb_pages("{nb}")
 pdf.set_auto_page_break(True, margin=18)
 pdf.set_margins(16, 14, 16)
-pdf.set_title("AUTOCC — Noob Guide")
-pdf.set_author("AUTOCC")
+pdf.set_title("Auto Dump — Noob Guide")
+pdf.set_author("Auto Dump")
 pdf.set_subject("Telegram bot: setup, usage, full source code")
 
 # Unicode fonts: Noto Sans (body) + DejaVu Sans Mono (code, has ─ █ ░ etc.)
@@ -389,7 +389,7 @@ pdf.add_page()
 pdf.ln(42)
 pdf.set_font("body", "B", 44)
 pdf.set_text_color(*ACCENT)
-pdf.cell(0, 20, "AUTOCC", align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 20, "Auto Dump", align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.set_font("body", "", 22)
 pdf.set_text_color(*DARK)
 pdf.cell(0, 14, "Noob Guide", align="C", new_x="LMARGIN", new_y="NEXT")

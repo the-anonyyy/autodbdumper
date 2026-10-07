@@ -109,7 +109,7 @@ def bar(pct, width=18):
 
 # ─── SCREEN TEXT (sent as chat msg, one-time header) ──────────────────
 HEADER_MAIN = (
-    "🪱 *What Can AUTocc Do?*\n\n"
+    "🪱 *What Can Auto Dump Do?*\n\n"
     "🥇 GEN KEYWORDS   ⇔  keyword sets\n"
     "🥈 GEN DORKS      ⇔  multi-category dorks\n"
     "🥉 DEEP PARSER    ⇔  DDGS + Bing\n"

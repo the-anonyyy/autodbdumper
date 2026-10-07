@@ -7,7 +7,7 @@ paths:
   logs: ./logs
 logging:
   level: INFO
-  file: ./logs/autocc.log
+  file: ./logs/autodump.log
 telegram:
   enabled: true
   token: YOUR_BOT_TOKEN_HERE

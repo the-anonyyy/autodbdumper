@@ -1,4 +1,4 @@
-# AUTOCC — Noob Guide
+# Auto Dump — Noob Guide
 ### Blueprint + Code + Setup + Usage — from absolute zero
 
 > This guide is for the friend who has never run a server before.
@@ -9,7 +9,7 @@
 ## Part 1 — Blueprint: what is this project?
 
 ### 1.1 In one line
-AUTOCC is a **Telegram bot**. You tap buttons on Telegram, and a full pipeline runs on the server: keywords → dorks → URL extraction → SQL injection scan → database dump → validate → dedupe → final files. You receive each step's file back on Telegram.
+Auto Dump is a **Telegram bot**. You tap buttons on Telegram, and a full pipeline runs on the server: keywords → dorks → URL extraction → SQL injection scan → database dump → validate → dedupe → final files. You receive each step's file back on Telegram.
 
 ### 1.2 The big pieces (architecture)
 
@@ -104,7 +104,7 @@ autocc/
 |   +-- bot.log             <- sab kuch yahan likha jaata hai (debug yahin se)
 +-- docs/
     +-- NOOB_GUIDE.md       <- ye guide
-    +-- AUTOCC-Noob-Guide.pdf
+    +-- AutoDump-Noob-Guide.pdf
 ```
 
 ### 4 fundamentals of the code
@@ -273,7 +273,7 @@ The systemd service restarts the bot by itself. Things under `/etc` may get wipe
 
 ~~~python
 #!/usr/bin/env python3
-"""autocc — reply-keyboard menus, file-driven pipeline. file in -> stage -> file out."""
+"""autodump — reply-keyboard menus, file-driven pipeline. file in -> stage -> file out."""
 import asyncio
 import os
 import re
@@ -1109,7 +1109,7 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL & ~filters.COMMAND,
                                   on_doc))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
-    print("autocc ui v5 running — file-driven pipeline, file in -> file out.")
+    print("autodump ui v5 running — file-driven pipeline, file in -> file out.")
     app.run_polling()
 
 
@@ -1123,7 +1123,7 @@ if __name__ == "__main__":
 ~~~python
 #!/usr/bin/env python3
 """
-autocc — automated recon → sqli → dump → parse → validate → dedupe → output pipeline.
+autodump — automated recon → sqli → dump → parse → validate → dedupe → output pipeline.
 Entry point. Orchestrates all modules.
 """
 import argparse
@@ -1142,7 +1142,7 @@ from modules.utils import load_config, setup_logger, ensure_dirs
 
 
 def parse_args():
-    p = argparse.ArgumentParser(prog="autocc", description="automated cc pipeline")
+    p = argparse.ArgumentParser(prog="autodump", description="automated dump pipeline")
     p.add_argument("-c", "--config", default="config.yaml", help="config path")
     p.add_argument("-t", "--target", help="single target domain")
     p.add_argument("-f", "--file", help="file with target list")
@@ -1216,7 +1216,7 @@ paths:
 
 logging:
   level: INFO
-  file: ./logs/autocc.log
+  file: ./logs/autodump.log
 
 telegram:
   enabled: true
@@ -1291,7 +1291,7 @@ lxml>=5.0.0
 
 ~~~ini
 [Unit]
-Description=autocc telegram bot
+Description=Auto Dump telegram bot
 After=network-online.target
 Wants=network-online.target
 
@@ -1340,7 +1340,7 @@ systemctl is-active autocc-bot.service
 ### `modules/__init__.py`
 
 ~~~python
-"""autocc modules package."""
+"""autodump modules package."""
 __version__ = "1.0.0"
 ~~~
 
@@ -1363,7 +1363,7 @@ def load_config(path: str) -> dict:
 
 def setup_logger(level: str, log_file: str) -> logging.Logger:
     Path(log_file).parent.mkdir(parents=True, exist_ok=True)
-    logger = logging.getLogger("autocc")
+    logger = logging.getLogger("autodump")
     logger.setLevel(getattr(logging, level.upper()))
     if logger.handlers:
         return logger
@@ -1526,7 +1526,7 @@ def bar(pct, width=18):
 
 # ─── SCREEN TEXT (sent as chat msg, one-time header) ──────────────────
 HEADER_MAIN = (
-    "🪱 *What Can AUTocc Do?*\n\n"
+    "🪱 *What Can Auto Dump Do?*\n\n"
     "🥇 GEN KEYWORDS   ⇔  keyword sets\n"
     "🥈 GEN DORKS      ⇔  multi-category dorks\n"
     "🥉 DEEP PARSER    ⇔  DDGS + Bing\n"

@@ -1,4 +1,4 @@
-# AUTOCC — Autodump Command Center
+# Auto Dump
 
 A Telegram-driven pipeline for **authorized security testing**: dork generation,
 URL parsing, live-host prefiltering, SQL injection scanning (sqlmap CLI +
@@ -148,7 +148,7 @@ autodbdumper/
 ## Documentation
 
 - [`docs/NOOB_GUIDE.md`](docs/NOOB_GUIDE.md) — complete beginner's guide
-- [`docs/AUTOCC-Noob-Guide.pdf`](docs/AUTOCC-Noob-Guide.pdf) — 56-page PDF version
+- [`docs/AutoDump-Noob-Guide.pdf`](docs/AutoDump-Noob-Guide.pdf) — 56-page PDF version
 
 ## License
 

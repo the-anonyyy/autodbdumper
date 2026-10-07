@@ -1,5 +1,5 @@
 #!/bin/bash
-# install / reinstall the autocc-bot systemd service
+# install / reinstall the autodump-bot systemd service
 set -e
 UNIT_SRC="/home/hatch/workspace/autocc/autocc-bot.service"
 UNIT_DST="/etc/systemd/system/autocc-bot.service"

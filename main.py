@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-autocc — automated recon → sqli → dump → parse → validate → dedupe → output pipeline.
+autodump — automated recon → sqli → dump → parse → validate → dedupe → output pipeline.
 Entry point. Orchestrates all modules.
 """
 import argparse
@@ -19,7 +19,7 @@ from modules.utils import load_config, setup_logger, ensure_dirs
 
 
 def parse_args():
-    p = argparse.ArgumentParser(prog="autocc", description="automated cc pipeline")
+    p = argparse.ArgumentParser(prog="autodump", description="automated dump pipeline")
     p.add_argument("-c", "--config", default="config.yaml", help="config path")
     p.add_argument("-t", "--target", help="single target domain")
     p.add_argument("-f", "--file", help="file with target list")

@@ -13,7 +13,7 @@ def load_config(path: str) -> dict:
 
 def setup_logger(level: str, log_file: str) -> logging.Logger:
     Path(log_file).parent.mkdir(parents=True, exist_ok=True)
-    logger = logging.getLogger("autocc")
+    logger = logging.getLogger("autodump")
     logger.setLevel(getattr(logging, level.upper()))
     if logger.handlers:
         return logger

@@ -28,7 +28,7 @@ class SqlmapAPI:
         # sqlmap >= 1.10 mandates --username/--password for the REST server.
         # no hardcoded default: use config value, else a random per-run
         # password (localhost only — never expose this port).
-        self.username = sc.get("username", "autocc")
+        self.username = sc.get("username", "autodump")
         self.password = sc.get("password") or secrets.token_urlsafe(24)
         self.base = f"http://{self.host}:{self.port}"
         self.api_path = self._locate(cfg)

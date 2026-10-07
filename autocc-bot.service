@@ -1,5 +1,5 @@
 [Unit]
-Description=autocc telegram bot
+Description=Auto Dump telegram bot
 After=network-online.target
 Wants=network-online.target
 

@@ -1,2 +1,2 @@
-"""autocc modules package."""
+"""autodump modules package."""
 __version__ = "1.0.0"

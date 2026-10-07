@@ -16,7 +16,7 @@ logs/
 
 # dumps & outputs (bade + sensitive ho sakte hain)
 *.zip
-!docs/autocc-source.zip
+!docs/autodump-source.zip
 
 # OS / editor
 .DS_Store

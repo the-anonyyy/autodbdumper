@@ -1,4 +1,4 @@
-"""proxy pool — rotation, live-testing, and sqlmap args for the autocc bot."""
+"""proxy pool — rotation, live-testing, and sqlmap args for the autodump bot."""
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import urlparse

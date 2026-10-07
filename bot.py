@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""autocc — reply-keyboard menus, file-driven pipeline. file in -> stage -> file out."""
+"""autodump — reply-keyboard menus, file-driven pipeline. file in -> stage -> file out."""
 import asyncio
 import json
 import os
@@ -1114,7 +1114,7 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL & ~filters.COMMAND,
                                   on_doc))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
-    print("autocc ui v5 running — file-driven pipeline, file in -> file out.")
+    print("autodump ui v5 running — file-driven pipeline, file in -> file out.")
     app.run_polling()
 
 
